@@ -1,0 +1,228 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+using Wemogy.Core.Encodings;
+using Wemogy.Core.Extensions;
+using Wemogy.Core.Primitives.JsonConverters;
+
+namespace Wemogy.Core.Primitives
+{
+    [JsonConverter(typeof(BitsNewtonsoftJsonConverter))]
+    [System.Text.Json.Serialization.JsonConverter(typeof(BitsJsonConverter))]
+    public class Bits
+    {
+        private readonly List<bool> _state;
+        private readonly bool _isWildcard;
+
+        public Bits(string? base64UrlValue = null)
+        {
+            if (string.IsNullOrWhiteSpace(base64UrlValue))
+            {
+                _state = new List<bool>();
+                return;
+            }
+
+            if (base64UrlValue == "*")
+            {
+                _isWildcard = true;
+                _state = new List<bool>();
+                return;
+            }
+
+            _state = Base64.DecodeUrl(base64UrlValue);
+        }
+
+        public override string ToString()
+        {
+            if (_isWildcard)
+            {
+                return "*";
+            }
+
+            return Base64.EncodeUrl(_state);
+        }
+
+        public bool HasFlag(int flagIndex)
+        {
+            if (_isWildcard)
+            {
+                return true;
+            }
+
+            var listIndex = MapFlagIndexToListIndex(flagIndex);
+            if (listIndex == -1)
+            {
+                return false;
+            }
+
+            return _state.ElementAtOrDefault(listIndex);
+        }
+
+        public bool HasFlags(IEnumerable<int> flagIndices)
+        {
+            return flagIndices.All(HasFlag);
+        }
+
+        public void SetFlag(int flagIndex)
+        {
+            if (_isWildcard)
+            {
+                return;
+            }
+
+            var listIndex = MapFlagIndexToListIndex(flagIndex);
+            if (listIndex == -1)
+            {
+                return;
+            }
+
+            EnsureListIndexExists(listIndex);
+            _state[listIndex] = true;
+        }
+
+        public void SetFlags(IEnumerable<int> flagIndices)
+        {
+            flagIndices.ToList().ForEach(SetFlag);
+        }
+
+        public void RemoveFlag(int flagIndex)
+        {
+            if (_isWildcard)
+            {
+                return;
+            }
+
+            var listIndex = MapFlagIndexToListIndex(flagIndex);
+            if (listIndex == -1)
+            {
+                return;
+            }
+
+            EnsureListIndexExists(listIndex);
+            _state[listIndex] = false;
+        }
+
+        public void RemoveFlags(IEnumerable<int> flagIndices)
+        {
+            flagIndices.ToList().ForEach(RemoveFlag);
+        }
+
+        public Bits Or(Bits bits)
+        {
+            var thisClone = new Bits(ToString());
+            if (thisClone._isWildcard)
+            {
+                return thisClone;
+            }
+
+            if (bits._isWildcard)
+            {
+                return bits.Clone();
+            }
+
+            var flagIndex = 0;
+            foreach (var bit in bits._state)
+            {
+                flagIndex++;
+                if (bit == false)
+                {
+                    continue;
+                }
+
+                thisClone.SetFlag(flagIndex);
+            }
+
+            return thisClone;
+        }
+
+        public Bits And(Bits bits)
+        {
+            if (_isWildcard)
+            {
+                return bits.Clone();
+            }
+
+            var thisClone = new Bits(ToString());
+            if (bits._isWildcard)
+            {
+                return thisClone;
+            }
+
+            var maxStateCount = Math.Max(thisClone._state.Count, bits._state.Count);
+
+            EnsureListIndexExists(maxStateCount - 1);
+            for (int i = 0; i < maxStateCount; i++)
+            {
+                var thisValue = thisClone._state.ElementAtOrDefault(i);
+                var otherValue = bits._state.ElementAtOrDefault(i);
+                var andResult = thisValue & otherValue;
+                var flagIndex = i + 1;
+                if (andResult)
+                {
+                    thisClone.SetFlag(flagIndex);
+                }
+                else
+                {
+                    thisClone.RemoveFlag(flagIndex);
+                }
+            }
+
+            return thisClone;
+        }
+
+        /// <summary>
+        /// The flag index is 1 based, because flagIndex 1 means the first bit
+        /// Moreover 0 will be the default if no argument provided, and we don't want to use this default
+        /// </summary>
+        private int MapFlagIndexToListIndex(int flagIndex)
+        {
+            return flagIndex - 1;
+        }
+
+        private void EnsureListIndexExists(int listIndex)
+        {
+            // fill the list with default values
+            while (_state.Count <= listIndex)
+            {
+                _state.Add(false);
+            }
+        }
+
+        public static Bits FromFlag(int flagIndex)
+        {
+            var bits = new Bits();
+            bits.SetFlag(flagIndex);
+            return bits;
+        }
+
+        public static Bits FromFlags(IEnumerable<int> flagIndices)
+        {
+            var bits = new Bits();
+            bits.SetFlags(flagIndices);
+            return bits;
+        }
+
+        public bool Equals(Bits obj)
+        {
+            // copy
+            var thisCopy = new Bits(ToString());
+            var objCopy = new Bits(obj.ToString());
+
+            // remove empty flags at the end
+            thisCopy.RemoveEmptyFlagsAtTheEnd();
+            objCopy.RemoveEmptyFlagsAtTheEnd();
+
+            // compare base64url strings
+            return thisCopy.ToString() == objCopy.ToString();
+        }
+
+        private void RemoveEmptyFlagsAtTheEnd()
+        {
+            while ((_state.LastOrDefault() == false) && _state.Any())
+            {
+                _state.RemoveLast();
+            }
+        }
+    }
+}
