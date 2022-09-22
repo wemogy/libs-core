@@ -25,7 +25,7 @@ namespace Wemogy.Core.Tests.Extensions
                 .RuleFor(x => x.Deleted, f => f.Random.Bool())
                 .RuleFor(x => x.FlightCount, f => f.Random.Long()).Generate();
 
-            var userDeserialized = user.ToJson().FromJson<TestClass>()!;
+            var userDeserialized = user.ToJson().FromJson<TestClass>() !;
 
             Assert.Equal(user.Id, userDeserialized.Id);
             Assert.True(user.CreatedAt.IsSameUnixDateTime(userDeserialized.CreatedAt));
@@ -43,7 +43,7 @@ namespace Wemogy.Core.Tests.Extensions
 }";
 
             // Act
-            var instance = json.FromJson<TestClass>()!;
+            var instance = json.FromJson<TestClass>() !;
 
             // Assert
             Assert.Equal(TestEnum.Value1, instance.EnumPropertyA);
@@ -58,7 +58,7 @@ namespace Wemogy.Core.Tests.Extensions
 }";
 
             // Act
-            var instance = json.FromJson<TestClass>()!;
+            var instance = json.FromJson<TestClass>() !;
 
             // Assert
             Assert.Equal(TestEnum.None, instance.EnumPropertyA);
@@ -74,7 +74,7 @@ namespace Wemogy.Core.Tests.Extensions
 }";
 
             // Act
-            var instance = json.FromJson<TestClass>()!;
+            var instance = json.FromJson<TestClass>() !;
 
             // Assert
             instance.TestTimeSpan.Should().Be(
@@ -131,7 +131,7 @@ namespace Wemogy.Core.Tests.Extensions
             var document = instance.ToJsonDocument();
 
             // Act
-            var result = document.FromJsonDocument<TestClass>()!;
+            var result = document.FromJsonDocument<TestClass>() !;
 
             // Assert
             Assert.NotNull(result);
