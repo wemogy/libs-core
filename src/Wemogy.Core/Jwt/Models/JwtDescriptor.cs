@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text.Json.Nodes;
+using Wemogy.Core.Extensions;
 
 namespace Wemogy.Core.Jwt.Models
 {
@@ -18,6 +20,44 @@ namespace Wemogy.Core.Jwt.Models
         {
             Scopes = new List<string>();
             AdditionalClaims = new Dictionary<string, object>();
+        }
+
+        public JsonObject ToJsonObject()
+        {
+            var json = new JsonObject();
+
+            if (Subject != null)
+            {
+                json.Add("sub", Subject);
+            }
+
+            if (Audience != null)
+            {
+                json.Add("aud", Audience);
+            }
+
+            if (Issuer != null)
+            {
+                json.Add("iss", Issuer);
+            }
+
+            if (ExpiresAt != null)
+            {
+                json.Add("exp", ExpiresAt.Value.ToUnixTimeSeconds());
+            }
+
+            if (Scopes.Count > 0)
+            {
+                json.Add("scp", Scopes.Join(" "));
+            }
+
+            foreach (var (key, value) in AdditionalClaims)
+            {
+                var obj = value.ToJson().FromJson<JsonObject>();
+                json.Add(key, obj);
+            }
+
+            return json;
         }
     }
 }
