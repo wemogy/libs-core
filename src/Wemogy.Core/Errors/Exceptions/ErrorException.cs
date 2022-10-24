@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Wemogy.Core.Errors.Enums;
 
 namespace Wemogy.Core.Errors.Exceptions
@@ -19,28 +18,8 @@ namespace Wemogy.Core.Errors.Exceptions
             : base($"{code} - {description}", innerException)
         {
             ErrorType = errorType;
-            Code = $"{GetCodePrefix()}-{code}";
+            Code = code;
             Description = description;
-        }
-
-        private string GetCodePrefix()
-        {
-            var stackTrace = new System.Diagnostics.StackTrace();
-            var stackFrames = stackTrace.GetFrames();
-            var errorCalledMethod = stackFrames?
-                .Select(x => x.GetMethod())
-                .FirstOrDefault(x => x.DeclaringType?.Namespace != null && !x.DeclaringType.Namespace.StartsWith("Wemogy.Core.Error"));
-            if (errorCalledMethod == null)
-            {
-                return string.Empty;
-            }
-
-            if (errorCalledMethod.DeclaringType == null)
-            {
-                return errorCalledMethod.Name;
-            }
-
-            return $"{errorCalledMethod.DeclaringType.Name}-{errorCalledMethod.Name}";
         }
     }
 }
