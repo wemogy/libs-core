@@ -1,4 +1,5 @@
 using Wemogy.Core.Primitives;
+using Wemogy.Core.Tests.Enums;
 using Xunit;
 
 namespace Wemogy.Core.Tests.Primitives
@@ -127,6 +128,32 @@ namespace Wemogy.Core.Tests.Primitives
 
             // Assert
             Assert.Null(exception);
+        }
+
+        [Theory]
+        [InlineData("D", TestEnum.None, TestEnum.Value1, TestEnum.Value2)]
+        [InlineData("F", TestEnum.Value3, TestEnum.Value1, TestEnum.None)]
+        [InlineData("H", TestEnum.Value1, TestEnum.Value3, TestEnum.Value2)]
+        public void FromFlags_ShouldWork(string expectedBits, TestEnum enum1, TestEnum enum2, TestEnum enum3)
+        {
+            // Arrange & Act
+            var result = Bits.FromFlags(enum1, enum2, enum3);
+
+            // Assert
+            Assert.Equal(expectedBits, result.ToString());
+        }
+
+        [Fact]
+        public void FromFlags_WorksWithNoParam()
+        {
+            // Arrange
+            var expectedBits = new Bits().ToString();
+
+            // Act
+            var result = Bits.FromFlags();
+
+            // Assert
+            Assert.Equal(expectedBits, result.ToString());
         }
     }
 }
