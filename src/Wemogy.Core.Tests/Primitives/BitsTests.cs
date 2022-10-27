@@ -139,5 +139,16 @@ namespace Wemogy.Core.Tests.Primitives
             // Act & Assert
             Assert.True(bits1.Equals(bits2));
         }
+
+        [Fact]
+        public void Wildcard_ShouldWork()
+        {
+            // Arrange
+            var bits1 = Bits.Wildcard;
+            var bits2 = new Bits("*");
+
+            // Act & Assert
+            Assert.True(bits1.Equals(bits2));
+        }
     }
 }

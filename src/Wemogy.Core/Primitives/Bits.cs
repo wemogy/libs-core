@@ -41,6 +41,14 @@ namespace Wemogy.Core.Primitives
             }
         }
 
+        public static Bits Wildcard
+        {
+            get
+            {
+                return new Bits("*");
+            }
+        }
+
         public override string ToString()
         {
             if (_isWildcard)
