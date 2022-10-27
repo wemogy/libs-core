@@ -35,14 +35,14 @@ namespace Wemogy.Core.Tests.Primitives
         public void Equals_ShouldWork()
         {
             // Arrange
-            var bit1 = new Bits("Abs");
-            var bit2 = new Bits("Abs");
-            var bit3 = new Bits("AAAAbs");
-            var bit4 = new Bits("Abs");
+            var bits1 = new Bits("Abs");
+            var bits2 = new Bits("Abs");
+            var bits3 = new Bits("AAAAbs");
+            var bits4 = new Bits("Abs");
 
             // Act & Assert
-            Assert.True(bit1.Equals(bit2));
-            Assert.True(bit3.Equals(bit4));
+            Assert.True(bits1.Equals(bits2));
+            Assert.True(bits3.Equals(bits4));
         }
 
         [Theory]
@@ -127,6 +127,17 @@ namespace Wemogy.Core.Tests.Primitives
 
             // Assert
             Assert.Null(exception);
+        }
+
+        [Fact]
+        public void Empty_ShouldWork()
+        {
+            // Arrange
+            var bits1 = Bits.Empty;
+            var bits2 = new Bits();
+
+            // Act & Assert
+            Assert.True(bits1.Equals(bits2));
         }
     }
 }

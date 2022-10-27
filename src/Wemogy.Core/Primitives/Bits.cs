@@ -33,6 +33,14 @@ namespace Wemogy.Core.Primitives
             _state = Base64.DecodeUrl(base64UrlValue);
         }
 
+        public static Bits Empty
+        {
+            get
+            {
+                return new Bits();
+            }
+        }
+
         public override string ToString()
         {
             if (_isWildcard)
