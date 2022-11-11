@@ -3,17 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using Bogus;
 using FluentAssertions;
 using Wemogy.Core.Extensions;
+using Wemogy.Core.Tests.Enums;
 using Xunit;
 
 namespace Wemogy.Core.Tests.Extensions
 {
-    public enum TestEnum
-    {
-        None = 0,
-        Value1 = 1,
-        Value2 = 2
-    }
-
     public class ObjectExtensionsTests
     {
         [Fact]
