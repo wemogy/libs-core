@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Mapster;
 
 namespace Wemogy.Core.Expressions
 {
@@ -49,7 +48,6 @@ namespace Wemogy.Core.Expressions
                 {
                     var stringValues = node.Object;
                     var containsValueArgument = node.Arguments[0];
-
 
                     if (stringValues != null && ExpressionNeedsModification(containsValueArgument, out PropertyInfo? propertyInfo))
                     {

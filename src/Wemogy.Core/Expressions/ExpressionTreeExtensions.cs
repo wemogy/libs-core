@@ -13,12 +13,14 @@ namespace Wemogy.Core.Expressions
             Func<string, string> modifier)
         {
             var propertyInfo = typeof(T).GetProperty(propertyName);
-            var propertyValueModifiers = new Dictionary<PropertyInfo, Func<string, string>>();
-            propertyValueModifiers.Add(propertyInfo, modifier);
+            var propertyValueModifiers = new Dictionary<PropertyInfo, Func<string, string>>
+            {
+                { propertyInfo, modifier }
+            };
 
             var visitor = new ModifyValueVisitor(propertyValueModifiers);
 
-            return ((Expression<Func<T, bool>>)visitor.Visit(expression))!;
+            return (Expression<Func<T, bool>>)visitor.Visit(expression) !;
         }
     }
 }
