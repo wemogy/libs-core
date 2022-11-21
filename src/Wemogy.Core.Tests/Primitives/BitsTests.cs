@@ -1,4 +1,5 @@
 using Wemogy.Core.Primitives;
+using Wemogy.Core.Tests.Enums;
 using Xunit;
 
 namespace Wemogy.Core.Tests.Primitives
@@ -35,14 +36,14 @@ namespace Wemogy.Core.Tests.Primitives
         public void Equals_ShouldWork()
         {
             // Arrange
-            var bit1 = new Bits("Abs");
-            var bit2 = new Bits("Abs");
-            var bit3 = new Bits("AAAAbs");
-            var bit4 = new Bits("Abs");
+            var bits1 = new Bits("Abs");
+            var bits2 = new Bits("Abs");
+            var bits3 = new Bits("AAAAbs");
+            var bits4 = new Bits("Abs");
 
             // Act & Assert
-            Assert.True(bit1.Equals(bit2));
-            Assert.True(bit3.Equals(bit4));
+            Assert.True(bits1.Equals(bits2));
+            Assert.True(bits3.Equals(bits4));
         }
 
         [Theory]
@@ -127,6 +128,54 @@ namespace Wemogy.Core.Tests.Primitives
 
             // Assert
             Assert.Null(exception);
+        }
+
+        [Fact]
+        public void Empty_ShouldWork()
+        {
+            // Arrange
+            var bits1 = Bits.Empty;
+            var bits2 = new Bits();
+
+            // Act & Assert
+            Assert.True(bits1.Equals(bits2));
+        }
+
+        [Fact]
+        public void Wildcard_ShouldWork()
+        {
+            // Arrange
+            var bits1 = Bits.Wildcard;
+            var bits2 = new Bits("*");
+
+            // Act & Assert
+            Assert.True(bits1.Equals(bits2));
+        }
+
+        [Theory]
+        [InlineData("D", TestEnum.None, TestEnum.Value1, TestEnum.Value2)]
+        [InlineData("F", TestEnum.Value3, TestEnum.Value1, TestEnum.None)]
+        [InlineData("H", TestEnum.Value1, TestEnum.Value3, TestEnum.Value2)]
+        public void FromFlags_ShouldWork(string expectedBits, TestEnum enum1, TestEnum enum2, TestEnum enum3)
+        {
+            // Arrange & Act
+            var result = Bits.FromFlags(enum1, enum2, enum3);
+
+            // Assert
+            Assert.Equal(expectedBits, result.ToString());
+        }
+
+        [Fact]
+        public void FromFlags_WorksWithNoParam()
+        {
+            // Arrange
+            var expectedBits = new Bits().ToString();
+
+            // Act
+            var result = Bits.FromFlags();
+
+            // Assert
+            Assert.Equal(expectedBits, result.ToString());
         }
     }
 }

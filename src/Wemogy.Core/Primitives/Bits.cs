@@ -33,6 +33,22 @@ namespace Wemogy.Core.Primitives
             _state = Base64.DecodeUrl(base64UrlValue);
         }
 
+        public static Bits Empty
+        {
+            get
+            {
+                return new Bits();
+            }
+        }
+
+        public static Bits Wildcard
+        {
+            get
+            {
+                return new Bits("*");
+            }
+        }
+
         public override string ToString()
         {
             if (_isWildcard)
@@ -196,10 +212,13 @@ namespace Wemogy.Core.Primitives
             return bits;
         }
 
-        public static Bits FromFlags(IEnumerable<int> flagIndices)
+        public static Bits FromFlags(params Enum[] enums)
         {
             var bits = new Bits();
+            var list = new List<Enum>(enums);
+            var flagIndices = list.Select(x => (int)(object)x);
             bits.SetFlags(flagIndices);
+
             return bits;
         }
 

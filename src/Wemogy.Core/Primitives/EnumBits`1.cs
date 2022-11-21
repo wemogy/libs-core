@@ -43,7 +43,8 @@ namespace Wemogy.Core.Primitives
 
         public EnumBits(IEnumerable<TEnum> flagIndices)
         {
-            _bits = Bits.FromFlags(flagIndices.Select(x => (int)(object)x));
+            var enums = flagIndices.Select(x => (Enum)x);
+            _bits = Bits.FromFlags(enums.ToArray());
         }
 
         public bool HasFlag(TEnum flag)
