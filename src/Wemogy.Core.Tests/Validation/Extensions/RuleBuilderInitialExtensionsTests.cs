@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using FluentValidation;
 using Wemogy.Core.Tests.Validation.TestResources.Models;
 using Wemogy.Core.Tests.Validation.TestResources.Validators;
@@ -132,6 +133,29 @@ namespace Wemogy.Core.Tests.Validation.Extensions
             // Act and Assert
             Assert.Throws<ValidationException>(() =>
                 validator.ValidateAndThrow(user));
+        }
+
+        [Theory]
+        [InlineData("abc", false)]
+        [InlineData("", false)]
+        [InlineData("00000000-0000-0000-0000-000000000000", false)]
+        [InlineData("00000000-0000-0000-0000-000000000001", true)]
+        public void MustBeValidButNotEmptyGuidTestValidator_ShouldWorkAsExpected(
+            string guidPropertyValue,
+            bool expectedIsValidResult)
+        {
+            // Arrange
+            var user = new User()
+            {
+                Firstname = guidPropertyValue
+            };
+            var validator = new MustBeValidButNotEmptyGuidTestValidator();
+
+            // Act
+            var validationResult = validator.Validate(user);
+
+            // Assert
+            validationResult.IsValid.Should().Be(expectedIsValidResult);
         }
     }
 }
