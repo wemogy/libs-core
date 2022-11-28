@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Force.DeepCloner;
 using Wemogy.Core.Json;
 
 namespace Wemogy.Core.Extensions
@@ -8,9 +9,7 @@ namespace Wemogy.Core.Extensions
     {
         public static T Clone<T>(this T obj)
         {
-            var json = obj.ToJson();
-            var clone = json.FromJson<T>();
-            return clone!;
+            return obj.DeepClone();
         }
 
         public static string ToJson<T>(this T obj)
