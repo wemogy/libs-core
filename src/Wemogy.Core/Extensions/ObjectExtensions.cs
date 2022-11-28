@@ -1,6 +1,5 @@
 using System;
 using System.Text.Json;
-using Force.DeepCloner;
 using Wemogy.Core.Json;
 
 namespace Wemogy.Core.Extensions
@@ -8,8 +7,10 @@ namespace Wemogy.Core.Extensions
     public static class ObjectExtensions
     {
         public static T Clone<T>(this T obj)
+            where T : class
         {
-            return obj.DeepClone();
+            var clone = ObjectCloner.ObjectCloner.DeepClone(obj);
+            return clone;
         }
 
         public static string ToJson<T>(this T obj)
