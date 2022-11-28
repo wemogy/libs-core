@@ -1,3 +1,4 @@
+using System;
 using FluentValidation;
 
 namespace Wemogy.Core.Validation.Extensions
@@ -17,6 +18,23 @@ namespace Wemogy.Core.Validation.Extensions
             this IRuleBuilderInitial<T, string> ruleFor)
         {
             return ruleFor.Matches("^[a-z0-9]+$");
+        }
+
+        public static IRuleBuilderOptions<T, string> MustBeValidButNotEmptyGuid<T>(
+            this IRuleBuilderInitial<T, string> ruleFor)
+        {
+            return ruleFor.Must(
+                value =>
+                {
+                    if (Guid.TryParse(
+                            value,
+                            out var guid))
+                    {
+                        return guid != Guid.Empty;
+                    }
+
+                    return false;
+                });
         }
     }
 }
