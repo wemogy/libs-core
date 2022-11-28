@@ -18,6 +18,7 @@
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="CaseExtensions" Version="1.1.0" />
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
+    <PackageReference Include="DeepCloner" Version="0.10.4" />
     <PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="JWT" Version="9.0.3" />

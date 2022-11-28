@@ -132,6 +132,23 @@ namespace Wemogy.Core.Tests.Extensions
             Assert.Equal(instance.TestUrl, result.TestUrl);
             Assert.Equal(instance.EnumPropertyA, result.EnumPropertyA);
         }
+
+        [Fact]
+        public void Clone_ShouldWork()
+        {
+            // Arrange
+            var user = new Faker<TestClass>()
+                .RuleFor(x => x.Id, f => f.Random.Guid())
+                .RuleFor(x => x.CreatedAt, f => f.Person.DateOfBirth.ToUniversalTime())
+                .RuleFor(x => x.Deleted, f => f.Random.Bool())
+                .RuleFor(x => x.FlightCount, f => f.Random.Long()).Generate();
+
+            // Act
+            var cloned = user.Clone();
+
+            // Assert
+            user.Should().BeEquivalentTo(cloned);
+        }
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Just test code")]
