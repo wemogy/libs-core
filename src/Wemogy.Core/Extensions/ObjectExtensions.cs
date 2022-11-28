@@ -7,7 +7,6 @@ namespace Wemogy.Core.Extensions
     public static class ObjectExtensions
     {
         public static T Clone<T>(this T obj)
-            where T : class
         {
             var clone = ObjectCloner.ObjectCloner.DeepClone(obj);
             return clone;
