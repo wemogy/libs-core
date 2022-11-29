@@ -36,5 +36,13 @@ namespace Wemogy.Core.Validation.Extensions
                     return false;
                 });
         }
+
+        public static IRuleBuilderOptions<T, string> MustBeAValidSlug<T>(
+            this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .Matches("^[A-Za-z0-9]+$")
+                .WithMessage("The slug cannot contain special characters.");
+        }
     }
 }
