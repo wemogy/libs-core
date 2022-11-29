@@ -6,6 +6,10 @@ namespace Wemogy.Core.Extensions
 {
     public static class ObjectExtensions
     {
+        /// <summary>
+        /// Clones a given object using JSON serialization and deserialization.
+        /// Don't use this method for performance critical code.
+        /// </summary>
         public static T Clone<T>(this T obj)
         {
             // Right now, this is the only way to clone an object.
