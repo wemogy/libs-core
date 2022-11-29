@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Bogus;
 using FluentAssertions;
@@ -139,7 +140,7 @@ namespace Wemogy.Core.Tests.Extensions
             // Arrange
             var user = new Faker<TestClass>()
                 .RuleFor(x => x.Id, f => f.Random.Guid())
-                .RuleFor(x => x.CreatedAt, f => f.Person.DateOfBirth.ToUniversalTime())
+                .RuleFor(x => x.CreatedAt, f => DateTime.UtcNow)
                 .RuleFor(x => x.Deleted, f => f.Random.Bool())
                 .RuleFor(x => x.FlightCount, f => f.Random.Long()).Generate();
 
@@ -148,6 +149,24 @@ namespace Wemogy.Core.Tests.Extensions
 
             // Assert
             user.Should().BeEquivalentTo(cloned);
+        }
+
+        [Fact]
+        public void Clone_ShouldSupportHashSet()
+        {
+            // Arrange
+            var user = new Faker<TestClass>()
+                .RuleFor(x => x.Id, f => f.Random.Guid())
+                .RuleFor(x => x.CreatedAt, f => f.Person.DateOfBirth.ToUniversalTime())
+                .RuleFor(x => x.Deleted, f => f.Random.Bool())
+                .RuleFor(x => x.FlightCount, f => f.Random.Long()).Generate();
+
+            // Act
+            var cloned = user.Clone();
+            var hashSetRemovedItems = cloned.HashSet.RemoveWhere(x => true);
+
+            // Assert
+            hashSetRemovedItems.Should().Be(1);
         }
     }
 
@@ -170,6 +189,8 @@ namespace Wemogy.Core.Tests.Extensions
 
         public TimeSpan TestTimeSpan { get; set; }
 
+        public HashSet<string> HashSet { get; set; }
+
         public TestClass()
         {
             Id = Guid.NewGuid();
@@ -180,6 +201,10 @@ namespace Wemogy.Core.Tests.Extensions
             EnumPropertyB = TestEnum.None;
             TestUrl = new Uri("http://localhost");
             TestTimeSpan = TimeSpan.Zero;
+            HashSet = new HashSet<string>()
+            {
+                "test"
+            };
         }
     }
 }
