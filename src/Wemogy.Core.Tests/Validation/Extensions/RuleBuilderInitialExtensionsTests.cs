@@ -157,5 +157,62 @@ namespace Wemogy.Core.Tests.Validation.Extensions
             // Assert
             validationResult.IsValid.Should().Be(expectedIsValidResult);
         }
+
+        [Theory]
+        [InlineData("spaceblocks")]
+        [InlineData("realtime")]
+        public void MustBeAValidSlugTestValidator_ShouldWorkAsExpected(string slug)
+        {
+            // Arrange
+            var user = new User()
+            {
+                Firstname = slug
+            };
+            var validator = new MustBeAValidSlugTestValidator();
+
+            // Act
+            var validationResult = validator.Validate(user);
+
+            // Assert
+            validationResult.IsValid.Should().BeTrue();
+        }
+
+        [Fact]
+        public void MustBeAValidSlugTestValidator_MustThrow_IfEmpty()
+        {
+            // Arrange
+            var user = new User()
+            {
+                Firstname = string.Empty
+            };
+            var validator = new MustBeAValidSlugTestValidator();
+
+            // Act and Assert
+            Assert.Throws<ValidationException>(() => validator.ValidateAndThrow(user));
+        }
+
+        [Theory]
+        [InlineData("subscription1")]
+        [InlineData("id@ntity")]
+        [InlineData("9e1a7458-d894-4861-8d4c-d64a12419e03")]
+        [InlineData("space blocks")]
+        [InlineData("real-time")]
+        [InlineData("RealTime")]
+        [InlineData("ViệtNam")]
+        public void MustBeAValidSlugTestValidator_MustThrow_IfContainNotAllowCharacters(string slug)
+        {
+            // Arrange
+            var user = new User()
+            {
+                Firstname = slug
+            };
+            var validator = new MustBeAValidSlugTestValidator();
+
+            // Act
+            var validationResult = validator.Validate(user);
+
+            // Assert
+            Assert.Throws<ValidationException>(() => validator.ValidateAndThrow(user));
+        }
     }
 }
