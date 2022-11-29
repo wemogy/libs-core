@@ -8,8 +8,11 @@ namespace Wemogy.Core.Extensions
     {
         public static T Clone<T>(this T obj)
         {
-            var clone = ObjectCloner.ObjectCloner.DeepClone(obj);
-            return clone;
+            // Right now, this is the only way to clone an object.
+            // Libraries like DeepClone, ObjectCloner, CloneExtensions, etc. are not supporting HashSet properties.
+            // The hashSet.RemoveWhere() method is not working on the cloned object.
+            var jsonDocument = JsonSerializer.SerializeToDocument(obj);
+            return jsonDocument.Deserialize<T>() !;
         }
 
         public static string ToJson<T>(this T obj)
