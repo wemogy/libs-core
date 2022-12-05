@@ -29,15 +29,12 @@ namespace Wemogy.Core.Mapster.Extensions
         /// <typeparam name="TFluentValidator">Type of validator</typeparam>
         /// <param name="source">The source object</param>
         /// <param name="destination">The existing instance of destination object</param>
-        /// <returns>The destination instance after be adapted with source object</returns>
-        public static TDestination AdaptValidateAndThrow<TDestination, TFluentValidator>(this object source, TDestination destination)
+        public static void AdaptValidateAndThrow<TDestination, TFluentValidator>(this object source, TDestination destination)
             where TFluentValidator : IValidator<TDestination>, new()
         {
             var validator = new TFluentValidator();
-            var mapped = source.Adapt(destination);
-            validator.ValidateAndThrow(mapped);
-
-            return mapped;
+            source.Adapt(destination);
+            validator.ValidateAndThrow(destination);
         }
     }
 }
