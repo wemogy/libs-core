@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -18,6 +19,7 @@ namespace Wemogy.Core.Refit
         private readonly ModularMessageHandler _modularMessageHandler;
         private HttpMessageHandler? _customMessageHandler;
         private Action<RefitSettings>? _modifySettings;
+        private Action<HttpRequestHeaders>? _setHttpRequestHeaders;
         private TimeSpan? _timeout;
 
         public RefitEnvironment(Uri baseAddress)
@@ -27,6 +29,13 @@ namespace Wemogy.Core.Refit
             _modifySettings = null;
             _httpClientFactory = new HttpClientFactory();
             _modularMessageHandler = new ModularMessageHandler();
+            _setHttpRequestHeaders = null;
+        }
+
+        public RefitEnvironment WithDefaultRequestHeaders(Action<HttpRequestHeaders> setHttpRequestHeaders)
+        {
+            _setHttpRequestHeaders = setHttpRequestHeaders;
+            return this;
         }
 
         public RefitEnvironment ModifySettings(Action<RefitSettings> modifySettings)
@@ -83,6 +92,9 @@ namespace Wemogy.Core.Refit
             var messageHandler = _customMessageHandler ?? _modularMessageHandler.GetIfNotEmpty();
 
             var httpClient = _httpClientFactory.GetHttpClient(_baseAddress, messageHandler, _timeout);
+
+            _setHttpRequestHeaders?.Invoke(httpClient.DefaultRequestHeaders);
+
             return RestService.For<TApi>(httpClient, settings);
         }
     }

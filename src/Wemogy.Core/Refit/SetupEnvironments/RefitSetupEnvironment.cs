@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
@@ -13,6 +14,12 @@ namespace Wemogy.Core.Refit.SetupEnvironments
         {
             _serviceCollection = serviceCollection;
             _refitEnvironment = new RefitEnvironment(baseAddress);
+        }
+
+        public RefitSetupEnvironment WithDefaultRequestHeaders(Action<HttpRequestHeaders> setDefaultRequestHeaders)
+        {
+            _refitEnvironment.WithDefaultRequestHeaders(setDefaultRequestHeaders);
+            return this;
         }
 
         public RefitSetupEnvironment ModifySettings(Action<RefitSettings> modifySettings)
