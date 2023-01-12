@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,8 +95,19 @@ namespace Wemogy.Core.Refit
             var httpClient = _httpClientFactory.GetHttpClient(_baseAddress, messageHandler, _timeout);
 
             _setHttpRequestHeaders?.Invoke(httpClient.DefaultRequestHeaders);
+            RemoveDuplicateHeaderValues(httpClient);
 
             return RestService.For<TApi>(httpClient, settings);
+        }
+
+        private static void RemoveDuplicateHeaderValues(HttpClient httpClient)
+        {
+            var cloneHeaders = httpClient.DefaultRequestHeaders.ToDictionary(x => x.Key, x => x.Value);
+            foreach (var header in cloneHeaders)
+            {
+                httpClient.DefaultRequestHeaders.Remove(header.Key);
+                httpClient.DefaultRequestHeaders.Add(header.Key, header.Value.Distinct());
+            }
         }
     }
 }
