@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ namespace Wemogy.Core.Refit
         private Action<RefitSettings>? _modifySettings;
         private Action<HttpRequestHeaders>? _setHttpRequestHeaders;
         private TimeSpan? _timeout;
+        private bool _setHttpRequestHeadersInvoked;
 
         public RefitEnvironment(Uri baseAddress)
         {
@@ -93,7 +95,11 @@ namespace Wemogy.Core.Refit
 
             var httpClient = _httpClientFactory.GetHttpClient(_baseAddress, messageHandler, _timeout);
 
-            _setHttpRequestHeaders?.Invoke(httpClient.DefaultRequestHeaders);
+            if (!_setHttpRequestHeadersInvoked)
+            {
+                _setHttpRequestHeadersInvoked = true;
+                _setHttpRequestHeaders?.Invoke(httpClient.DefaultRequestHeaders);
+            }
 
             return RestService.For<TApi>(httpClient, settings);
         }

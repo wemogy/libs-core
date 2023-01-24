@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Divergic.Logging.Xunit;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -39,7 +40,7 @@ public class RefitSetupExtensionsTests : IDisposable
             .RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
-                    .WithBody("{{request.headers.Authorization}}")
+                    .WithBody("{{request.headers}}")
                     .WithTransformer());
     }
 
@@ -141,11 +142,74 @@ public class RefitSetupExtensionsTests : IDisposable
 
         // Act
         var sampleApiService = serviceProvider.GetRequiredService<ISampleApi>();
-        var headerValue = await sampleApiService.HeaderDebugAsync("Authorization");
+        var headerValue = await sampleApiService.HeaderDebugAsync();
 
         // Assert
-        Assert.Equal(
-            $"Bearer {bearerToken}",
+        Assert.Contains(
+            $"[Authorization, Bearer {bearerToken}]",
+            headerValue);
+    }
+
+    [Fact]
+    public async Task WithDefaultRequestHeaders_ShouldWork()
+    {
+        // Arrange
+        var apiKey1 = "ey1234";
+        var apiKey2 = "ey1234";
+        var serviceCollection = new ServiceCollection();
+        serviceCollection
+            .AddRefitApi(GetMockServerUri())
+            .WithDefaultRequestHeaders(headers =>
+            {
+                headers.Add("apiKey1", apiKey1);
+                headers.Add("apiKey2", apiKey2);
+            })
+            .WithApiInterface<ISampleApi>();
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        // Act
+        var sampleApiService = serviceProvider.GetRequiredService<ISampleApi>();
+        var headerValue = await sampleApiService.HeaderDebugAsync();
+
+        // Assert
+        Assert.Contains(
+            $"[apiKey1, {apiKey1}]",
+            headerValue);
+        Assert.Contains(
+            $"[apiKey2, {apiKey2}]",
+            headerValue);
+    }
+
+    [Fact]
+    public async Task WithDefaultRequestHeaders_RegisterApiIterfaceTwice_ShouldNotDuplicateHeaderValue()
+    {
+        // Arrange
+        var apiKey = "ey1234";
+        var serviceCollection = new ServiceCollection();
+        serviceCollection
+            .AddRefitApi(GetMockServerUri())
+            .WithDefaultRequestHeaders(headers =>
+            {
+                headers.Add("apiKey", apiKey);
+            })
+            .WithApiInterface<ISimpleSampleApi>()
+            .WithApiInterface<ISampleApi>();
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        // Act
+        var simpleSampleApiService = serviceProvider.GetRequiredService<ISimpleSampleApi>();
+        var sampleApiService = serviceProvider.GetRequiredService<ISampleApi>();
+        var simpleHeaderValue = await simpleSampleApiService.HeaderDebugAsync();
+        var headerValue = await sampleApiService.HeaderDebugAsync();
+
+        // Assert
+        Assert.Contains(
+            $"[apiKey, {apiKey}]",
+            simpleHeaderValue);
+        Assert.Contains(
+            $"[apiKey, {apiKey}]",
             headerValue);
     }
 
