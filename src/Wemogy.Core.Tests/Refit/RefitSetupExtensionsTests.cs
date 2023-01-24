@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Divergic.Logging.Xunit;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
