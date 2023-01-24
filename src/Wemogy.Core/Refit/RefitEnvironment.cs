@@ -22,6 +22,7 @@ namespace Wemogy.Core.Refit
         private Action<RefitSettings>? _modifySettings;
         private Action<HttpRequestHeaders>? _setHttpRequestHeaders;
         private TimeSpan? _timeout;
+        private bool _setHttpRequestHeadersInvoked;
 
         public RefitEnvironment(Uri baseAddress)
         {
@@ -94,20 +95,13 @@ namespace Wemogy.Core.Refit
 
             var httpClient = _httpClientFactory.GetHttpClient(_baseAddress, messageHandler, _timeout);
 
-            _setHttpRequestHeaders?.Invoke(httpClient.DefaultRequestHeaders);
-            RemoveDuplicateHeaderValues(httpClient);
+            if (!_setHttpRequestHeadersInvoked)
+            {
+                _setHttpRequestHeadersInvoked = true;
+                _setHttpRequestHeaders?.Invoke(httpClient.DefaultRequestHeaders);
+            }
 
             return RestService.For<TApi>(httpClient, settings);
-        }
-
-        private static void RemoveDuplicateHeaderValues(HttpClient httpClient)
-        {
-            var cloneHeaders = httpClient.DefaultRequestHeaders.ToDictionary(x => x.Key, x => x.Value);
-            foreach (var header in cloneHeaders)
-            {
-                httpClient.DefaultRequestHeaders.Remove(header.Key);
-                httpClient.DefaultRequestHeaders.Add(header.Key, header.Value.Distinct());
-            }
         }
     }
 }
