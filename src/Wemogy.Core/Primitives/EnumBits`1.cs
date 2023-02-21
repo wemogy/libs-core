@@ -26,6 +26,8 @@ namespace Wemogy.Core.Primitives
 
         private readonly Bits _bits;
 
+        public int Length => _bits.Length;
+
         public EnumBits(Bits bits)
         {
             _bits = bits;
