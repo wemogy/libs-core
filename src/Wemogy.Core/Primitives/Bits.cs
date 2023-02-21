@@ -13,7 +13,9 @@ namespace Wemogy.Core.Primitives
     public class Bits
     {
         private readonly List<bool> _state;
-        private readonly bool _isWildcard;
+        public bool IsWildcard { get; }
+
+        public int Length => _state.Count;
 
         public Bits(string? base64UrlValue = null)
         {
@@ -25,7 +27,7 @@ namespace Wemogy.Core.Primitives
 
             if (base64UrlValue == "*")
             {
-                _isWildcard = true;
+                IsWildcard = true;
                 _state = new List<bool>();
                 return;
             }
@@ -51,7 +53,7 @@ namespace Wemogy.Core.Primitives
 
         public override string ToString()
         {
-            if (_isWildcard)
+            if (IsWildcard)
             {
                 return "*";
             }
@@ -61,7 +63,7 @@ namespace Wemogy.Core.Primitives
 
         public bool HasFlag(int flagIndex)
         {
-            if (_isWildcard)
+            if (IsWildcard)
             {
                 return true;
             }
@@ -80,9 +82,25 @@ namespace Wemogy.Core.Primitives
             return flagIndices.All(HasFlag);
         }
 
+        public bool GetFlag(int flagIndex)
+        {
+            if (IsWildcard)
+            {
+                return true;
+            }
+
+            var listIndex = MapFlagIndexToListIndex(flagIndex);
+            if (listIndex == -1)
+            {
+                return false;
+            }
+
+            return _state.ElementAtOrDefault(listIndex);
+        }
+
         public void SetFlag(int flagIndex)
         {
-            if (_isWildcard)
+            if (IsWildcard)
             {
                 return;
             }
@@ -104,7 +122,7 @@ namespace Wemogy.Core.Primitives
 
         public void RemoveFlag(int flagIndex)
         {
-            if (_isWildcard)
+            if (IsWildcard)
             {
                 return;
             }
@@ -127,12 +145,12 @@ namespace Wemogy.Core.Primitives
         public Bits Or(Bits bits)
         {
             var thisClone = new Bits(ToString());
-            if (thisClone._isWildcard)
+            if (thisClone.IsWildcard)
             {
                 return thisClone;
             }
 
-            if (bits._isWildcard)
+            if (bits.IsWildcard)
             {
                 return bits.Clone();
             }
@@ -154,13 +172,13 @@ namespace Wemogy.Core.Primitives
 
         public Bits And(Bits bits)
         {
-            if (_isWildcard)
+            if (IsWildcard)
             {
                 return bits.Clone();
             }
 
             var thisClone = new Bits(ToString());
-            if (bits._isWildcard)
+            if (bits.IsWildcard)
             {
                 return thisClone;
             }
@@ -242,6 +260,16 @@ namespace Wemogy.Core.Primitives
             {
                 _state.RemoveLast();
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ToString().Equals(obj.ToString());
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }
