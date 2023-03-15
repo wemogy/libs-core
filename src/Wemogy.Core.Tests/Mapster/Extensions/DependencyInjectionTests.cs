@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
+using Wemogy.Core.Mapster;
 using Wemogy.Core.Mapster.Extensions;
 using Wemogy.Core.Tests.Mapster.TestResources.Models;
 using Xunit;
@@ -10,11 +11,10 @@ namespace Wemogy.Core.Tests.Mapster.Extensions;
 public class DependencyInjectionTests
 {
     [Fact]
-    public void AddMapster_ShouldEnableExplicitMapping()
+    public void RegisterMappings_GivenTrue_ShouldEnableExplicitMapping()
     {
         // Arrange
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddMapster();
+        MapsterRegistration.RegisterMappings(true);
         var user = new User();
         var member = new Member();
 
