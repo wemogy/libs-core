@@ -17,6 +17,8 @@ namespace Wemogy.Core.Primitives
 
         public int Length => _state.Count;
 
+        public bool IsEmpty => Equals(Bits.Empty);
+
         public Bits(string? base64UrlValue = null)
         {
             if (string.IsNullOrWhiteSpace(base64UrlValue))
