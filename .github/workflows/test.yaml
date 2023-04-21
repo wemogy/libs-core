@@ -34,7 +34,7 @@ jobs:
           output: 'both'
 
       - name: Add Coverage PR Comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v2.5.0
         if: github.event_name == 'pull_request'
         with:
           recreate: true
