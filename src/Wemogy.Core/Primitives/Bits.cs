@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using Wemogy.Core.Encodings;
 using Wemogy.Core.Extensions;
@@ -272,6 +273,25 @@ namespace Wemogy.Core.Primitives
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns the bits as a binary string (from left to right)
+        /// e.g. 1010 (1 is bit 1, 0 is bit 2, 1 is bit 3, 0 is bit 4)
+        /// </summary>
+        /// <param name="length">The length of the binary string</param>
+        public string ToBinaryString(int? length = null)
+        {
+            length ??= IsWildcard ? 6 : _state.Count;
+
+            var stringBuilder = new StringBuilder();
+
+            for (int i = 1; i <= length; i++)
+            {
+                stringBuilder.Append(GetFlag(i) ? "1" : "0");
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }

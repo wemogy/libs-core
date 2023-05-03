@@ -177,5 +177,27 @@ namespace Wemogy.Core.Tests.Primitives
             // Assert
             Assert.Equal(expectedBits, result.ToString());
         }
+
+        [Theory]
+        [InlineData("*", "111111")]
+        [InlineData("*", "111", 3)]
+        [InlineData("*", "11111111111", 11)]
+        [InlineData("A", "000000")]
+        [InlineData("A", "000000000000", 12)]
+        [InlineData("F", "101000")]
+        [InlineData("F", "101000000000", 12)]
+        [InlineData("HDF", "101000110000111000")]
+        [InlineData("HDF", "10100011000011100000", 20)]
+        public void ToBinaryString_ShouldWork(string bitsBase64, string expectedBinaryString, int? length = null)
+        {
+            // Arrange
+            var bits = new Bits(bitsBase64);
+
+            // Act
+            var binaryString = bits.ToBinaryString(length);
+
+            // Assert
+            Assert.Equal(expectedBinaryString, binaryString);
+        }
     }
 }
