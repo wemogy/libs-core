@@ -1,9 +1,13 @@
-# ![wemogy logo](https://wemogyimages.blob.core.windows.net/logos/wemogy-github-tiny.png) wemogy.Core
+# ![wemogy logo](https://wemogyimages.blob.core.windows.net/logos/wemogy-github-tiny.png) Core Library
 
-## About
-
-The **wemogy.Core** library is a collection of useful classes and extension methods that can be used in any .NET project.
+A collection of useful classes, tools and extension methods that can be used in any .NET project.
 
 ## Getting started
 
-All extensions can be used without any initialization. Just checkout the [Documentation]() to get information about the available classes and extensions.
+Install the [NuGet package](https://www.nuget.org/packages/Wemogy.Core) into your project.
+
+```bash
+dotnet add package wemogy.Core
+```
+
+Checkout the [Documentation](https://libs-core.docs.wemogy.com/) to get information about the available classes and extensions.
