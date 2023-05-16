@@ -7,7 +7,7 @@ A collection of useful classes, tools and extension methods that can be used in 
 Install the [NuGet package](https://www.nuget.org/packages/Wemogy.Core) into your project.
 
 ```bash
-dotnet add package wemogy.Core
+dotnet add package Wemogy.Core
 ```
 
 Checkout the [Documentation](https://libs-core.docs.wemogy.com/) to get information about the available classes and extensions.
