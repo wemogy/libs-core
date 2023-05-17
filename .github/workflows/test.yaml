@@ -5,7 +5,7 @@ on:
   pull_request:
     branches:
       - main
-      
+
 permissions:
   # Required for adding the code coverage comment when running in the context of Dependabot,
   # as it has read-only permissions by default
