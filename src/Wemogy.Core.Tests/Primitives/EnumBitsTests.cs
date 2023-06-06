@@ -37,5 +37,63 @@ namespace Wemogy.Core.Tests.Primitives
             // Assert
             Assert.Equal(emptyEnumBits, bits);
         }
+
+        [Fact]
+        public void SetFlag_ShouldWork()
+        {
+            // Arrange
+            var enumBits = EnumBits<TestPermissionFlags>.Empty;
+
+            // Act
+            enumBits.SetFlag(TestPermissionFlags.CanMove);
+
+            // Assert
+            Assert.True(enumBits.HasFlag(TestPermissionFlags.CanMove));
+            Assert.False(enumBits.HasFlag(TestPermissionFlags.CanComment));
+        }
+
+        [Fact]
+        public void SetFlags_ShouldWork()
+        {
+            // Arrange
+            var enumBits = EnumBits<TestPermissionFlags>.Empty;
+
+            // Act
+            enumBits.SetFlags(TestPermissionFlags.CanMove, TestPermissionFlags.CanComment);
+
+            // Assert
+            Assert.True(enumBits.HasFlag(TestPermissionFlags.CanMove));
+            Assert.True(enumBits.HasFlag(TestPermissionFlags.CanComment));
+            Assert.False(enumBits.HasFlag(TestPermissionFlags.CanRead));
+        }
+
+        [Fact]
+        public void RemoveFlag_ShouldWork()
+        {
+            // Arrange
+            var enumBits = new EnumBits<TestPermissionFlags>("L"); // 001011
+
+            // Act
+            enumBits.RemoveFlag(TestPermissionFlags.CanMove);
+
+            // Assert
+            Assert.False(enumBits.HasFlag(TestPermissionFlags.CanMove));
+            Assert.True(enumBits.HasFlag(TestPermissionFlags.CanComment));
+        }
+
+        [Fact]
+        public void RemoveFlags_ShouldWork()
+        {
+            // Arrange
+            var enumBits = new EnumBits<TestPermissionFlags>("L"); // 001011
+
+            // Act
+            enumBits.RemoveFlags(TestPermissionFlags.CanMove, TestPermissionFlags.CanComment);
+
+            // Assert
+            Assert.False(enumBits.HasFlag(TestPermissionFlags.CanMove));
+            Assert.False(enumBits.HasFlag(TestPermissionFlags.CanComment));
+            Assert.True(enumBits.HasFlag(TestPermissionFlags.CanRead));
+        }
     }
 }
