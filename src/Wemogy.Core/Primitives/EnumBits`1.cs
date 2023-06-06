@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Wemogy.Core.Primitives.JsonConverters;
 
 namespace Wemogy.Core.Primitives
 {
+    [System.Text.Json.Serialization.JsonConverter(typeof(EnumBitsJsonConverter))]
     public class EnumBits<TEnum>
         where TEnum : Enum
     {
