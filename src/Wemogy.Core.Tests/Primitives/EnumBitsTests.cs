@@ -95,5 +95,61 @@ namespace Wemogy.Core.Tests.Primitives
             Assert.False(enumBits.HasFlag(TestPermissionFlags.CanComment));
             Assert.True(enumBits.HasFlag(TestPermissionFlags.CanRead));
         }
+
+        [Fact]
+        public void Or_ShouldWork()
+        {
+            // Arrange
+            var enumBits1 = new EnumBits<TestPermissionFlags>("L"); // 001011
+            var enumBits2 = new EnumBits<TestPermissionFlags>("M"); // 001100
+
+            // Act
+            var orResult = enumBits1.Or(enumBits2);
+
+            // Assert
+            Assert.Equal("P", orResult.ToString()); // 001111
+        }
+
+        [Fact]
+        public void Or_ShouldWorkForEmpty()
+        {
+            // Arrange
+            var enumBits1 = new EnumBits<TestPermissionFlags>("L"); // 001011
+            var enumBits2 = EnumBits<TestPermissionFlags>.Empty;
+
+            // Act
+            var orResult = enumBits1.Or(enumBits2);
+
+            // Assert
+            Assert.Equal("L", orResult.ToString()); // 001011
+        }
+
+        [Fact]
+        public void And_ShouldWork()
+        {
+            // Arrange
+            var enumBits1 = new EnumBits<TestPermissionFlags>("L"); // 001011
+            var enumBits2 = new EnumBits<TestPermissionFlags>("M"); // 001100
+
+            // Act
+            var andResult = enumBits1.And(enumBits2);
+
+            // Assert
+            Assert.Equal("I", andResult.ToString()); // 001000
+        }
+
+        [Fact]
+        public void And_ShouldWorkForEmpty()
+        {
+            // Arrange
+            var enumBits1 = new EnumBits<TestPermissionFlags>("L"); // 001011
+            var enumBits2 = EnumBits<TestPermissionFlags>.Empty;
+
+            // Act
+            var andResult = enumBits1.And(enumBits2);
+
+            // Assert
+            Assert.Equal("A", andResult.ToString()); // 000000
+        }
     }
 }
