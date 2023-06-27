@@ -106,5 +106,15 @@ namespace Wemogy.Core.Primitives
         {
             return ToString().GetHashCode();
         }
+
+        public EnumBits<TEnum> Or(EnumBits<TEnum> other)
+        {
+            return new EnumBits<TEnum>(_bits.Or(other._bits));
+        }
+
+        public EnumBits<TEnum> And(EnumBits<TEnum> other)
+        {
+            return new EnumBits<TEnum>(_bits.And(other._bits));
+        }
     }
 }
