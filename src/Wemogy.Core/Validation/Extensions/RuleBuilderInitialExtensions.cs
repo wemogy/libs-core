@@ -41,7 +41,7 @@ namespace Wemogy.Core.Validation.Extensions
             this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder
-                .Matches("^[a-z]+$")
+                .Matches("^(?!-)[a-z]+(?:-[a-z]+)*(?!-)$")
                 .WithMessage("The slug cannot contain special characters.");
         }
     }

@@ -161,6 +161,7 @@ namespace Wemogy.Core.Tests.Validation.Extensions
         [Theory]
         [InlineData("spaceblocks")]
         [InlineData("realtime")]
+        [InlineData("real-time")]
         public void MustBeAValidSlugTestValidator_ShouldWorkAsExpected(string slug)
         {
             // Arrange
@@ -196,9 +197,10 @@ namespace Wemogy.Core.Tests.Validation.Extensions
         [InlineData("id@ntity")]
         [InlineData("9e1a7458-d894-4861-8d4c-d64a12419e03")]
         [InlineData("space blocks")]
-        [InlineData("real-time")]
         [InlineData("RealTime")]
         [InlineData("ViệtNam")]
+        [InlineData("-realtime")]
+        [InlineData("realtime-")]
         public void MustBeAValidSlugTestValidator_MustThrow_IfContainNotAllowCharacters(string slug)
         {
             // Arrange
