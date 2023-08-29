@@ -10,6 +10,8 @@ namespace Wemogy.Core.Tests.Validation.TestResources.Models
 
         public string Firstname { get; set; }
 
+        public string? MiddleName { get; set; }
+
         public bool IsDefault { get; set; }
 
         public User? Friend { get; set; }
