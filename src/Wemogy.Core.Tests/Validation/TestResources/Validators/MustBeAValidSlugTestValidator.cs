@@ -9,5 +9,8 @@ public class MustBeAValidSlugTestValidator : AbstractValidator<User>
     public MustBeAValidSlugTestValidator()
     {
         RuleFor(x => x.Firstname).MustBeAValidSlug();
+        RuleFor(x => x.MiddleName)
+            .MustBeAValidSlug()
+            .Unless(x => x.MiddleName == null);
     }
 }

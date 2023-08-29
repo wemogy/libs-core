@@ -38,7 +38,7 @@ namespace Wemogy.Core.Validation.Extensions
         }
 
         public static IRuleBuilderOptions<T, string> MustBeAValidSlug<T>(
-            this IRuleBuilder<T, string> ruleBuilder)
+            this IRuleBuilder<T, string?> ruleBuilder)
         {
             return ruleBuilder
                 .Matches("^(?!-)[a-z]+(?:-[a-z]+)*(?!-)$")
