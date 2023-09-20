@@ -18,6 +18,7 @@ jobs:
         uses: ./.github/actions/dotnet
         with:
           version: "1.0.0-test"
+
       - name: Test .NET Solution
         working-directory: src
         shell: bash
@@ -33,7 +34,7 @@ jobs:
 
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2.5.0
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
         with:
           recreate: true
           path: code-coverage-results.md

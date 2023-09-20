@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Wemogy.Core.Primitives.JsonConverters;
 
 namespace Wemogy.Core.Primitives
 {
+    [System.Text.Json.Serialization.JsonConverter(typeof(EnumBitsJsonConverter))]
     public class EnumBits<TEnum>
         where TEnum : Enum
     {
@@ -61,6 +63,30 @@ namespace Wemogy.Core.Primitives
             return _bits.HasFlags(flagIndices);
         }
 
+        public void SetFlag(TEnum flag)
+        {
+            var flagIndex = (int)(object)flag;
+            _bits.SetFlag(flagIndex);
+        }
+
+        public void SetFlags(params TEnum[] flags)
+        {
+            var flagIndices = flags.Select(flag => (int)(object)flag);
+            _bits.SetFlags(flagIndices);
+        }
+
+        public void RemoveFlag(TEnum flag)
+        {
+            var flagIndex = (int)(object)flag;
+            _bits.RemoveFlag(flagIndex);
+        }
+
+        public void RemoveFlags(params TEnum[] flags)
+        {
+            var flagIndices = flags.Select(flag => (int)(object)flag);
+            _bits.RemoveFlags(flagIndices);
+        }
+
         public override string ToString()
         {
             return _bits.ToString();
@@ -79,6 +105,16 @@ namespace Wemogy.Core.Primitives
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
+        }
+
+        public EnumBits<TEnum> Or(EnumBits<TEnum> other)
+        {
+            return new EnumBits<TEnum>(_bits.Or(other._bits));
+        }
+
+        public EnumBits<TEnum> And(EnumBits<TEnum> other)
+        {
+            return new EnumBits<TEnum>(_bits.And(other._bits));
         }
     }
 }
