@@ -1,0 +1,4 @@
+{
+  "dotnet.defaultSolution": "src/Wemogy.Core.sln",
+  "cSpell.words": ["Otlp"]
+}
