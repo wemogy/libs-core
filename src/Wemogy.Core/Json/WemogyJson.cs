@@ -12,7 +12,8 @@ namespace Wemogy.Core.Json
         {
             new DateTimeUnixEpochJsonConverter(),
             new EnumJsonConverterFactory(),
-            new JsonTimeSpanConverter()
+            new JsonTimeSpanConverter(),
+            new TypeConverter()
         };
 
         public static JsonSerializerOptions Options
