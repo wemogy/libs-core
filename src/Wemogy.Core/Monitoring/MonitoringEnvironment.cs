@@ -7,8 +7,11 @@ namespace Wemogy.Core.Monitoring
     public class MonitoringEnvironment
     {
         public string ServiceName { get; }
+        public string? ServiceNamespace { get; }
+        public string? ServiceInstanceId { get; }
         public string ServiceVersion { get; }
         public string ApplicationInsightsConnectionString { get; private set; }
+        public float ApplicationInsightsSamplingRatio { get; private set; }
         public bool UseApplicationInsights => !string.IsNullOrEmpty(ApplicationInsightsConnectionString);
         public Uri? OtlpExportEndpoint { get; private set; }
         public bool UseOtlpExporter => OtlpExportEndpoint != null;
@@ -35,9 +38,19 @@ namespace Wemogy.Core.Monitoring
             ServiceVersion = serviceVersion;
         }
 
-        public MonitoringEnvironment WithApplicationInsights(string connectionString)
+        public MonitoringEnvironment(string serviceName, string serviceNamespace, string serviceInstanceId, string serviceVersion)
+            : this(serviceName, serviceVersion)
+        {
+            ServiceName = serviceName;
+            ServiceNamespace = serviceNamespace;
+            ServiceInstanceId = serviceInstanceId;
+            ServiceVersion = serviceVersion;
+        }
+
+        public MonitoringEnvironment WithApplicationInsights(string connectionString, float samplingRatio = 1f)
         {
             ApplicationInsightsConnectionString = connectionString;
+            ApplicationInsightsSamplingRatio = samplingRatio;
             return this;
         }
 
