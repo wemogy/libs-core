@@ -17,6 +17,7 @@ namespace Wemogy.Core.Monitoring
         public bool UseOtlpExporter => OtlpExportEndpoint != null;
         public bool UsePrometheus { get; private set; }
         public HashSet<string> MeterNames { get; private set; }
+        public HashSet<string> ActivitySourceNames { get; private set; }
 
         public MonitoringEnvironment()
         {
@@ -29,6 +30,7 @@ namespace Wemogy.Core.Monitoring
             UsePrometheus = false;
             OtlpExportEndpoint = null;
             MeterNames = new HashSet<string>();
+            ActivitySourceNames = new HashSet<string>();
         }
 
         public MonitoringEnvironment(string serviceName, string serviceVersion)
@@ -77,6 +79,16 @@ namespace Wemogy.Core.Monitoring
         public MonitoringEnvironment WithMeter(string meterName)
         {
             MeterNames.Add(meterName);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers a System.Diagnostics.ActivitySource at the environment. The activity source itself has to be created outside the environment.
+        /// </summary>
+        /// <param name="activitySourceName">Name of the activity source</param>
+        public MonitoringEnvironment WithActivitySource(string activitySourceName)
+        {
+            ActivitySourceNames.Add(activitySourceName);
             return this;
         }
     }
