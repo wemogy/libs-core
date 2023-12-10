@@ -12,7 +12,7 @@ namespace Wemogy.Core.Monitoring
         public string ServiceVersion { get; }
         public string ApplicationInsightsConnectionString { get; private set; }
         public float ApplicationInsightsSamplingRatio { get; private set; }
-        public bool UseApplicationInsights => !string.IsNullOrEmpty(ApplicationInsightsConnectionString);
+        public bool UseApplicationInsights { get; private set; }
         public Uri? OtlpExportEndpoint { get; private set; }
         public bool UseOtlpExporter => OtlpExportEndpoint != null;
         public bool UsePrometheus { get; private set; }
@@ -64,6 +64,7 @@ namespace Wemogy.Core.Monitoring
 
             ApplicationInsightsConnectionString = connectionString;
             ApplicationInsightsSamplingRatio = samplingRatio;
+            UseApplicationInsights = true;
             return this;
         }
 
@@ -79,6 +80,11 @@ namespace Wemogy.Core.Monitoring
             {
                 ApplicationInsightsConnectionString = connectionString;
                 ApplicationInsightsSamplingRatio = samplingRatio;
+                UseApplicationInsights = true;
+            }
+            else
+            {
+                UseApplicationInsights = false;
             }
 
             return this;
