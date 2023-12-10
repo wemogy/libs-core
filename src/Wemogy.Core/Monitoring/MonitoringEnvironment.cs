@@ -76,7 +76,7 @@ namespace Wemogy.Core.Monitoring
         /// <param name="samplingRatio">The sampling ratio to use.</param>
         public MonitoringEnvironment WithOptionalApplicationInsights(string? connectionString, float samplingRatio = 1f)
         {
-            if (string.IsNullOrEmpty(connectionString))
+            if (!string.IsNullOrEmpty(connectionString))
             {
                 ApplicationInsightsConnectionString = connectionString;
                 ApplicationInsightsSamplingRatio = samplingRatio;
