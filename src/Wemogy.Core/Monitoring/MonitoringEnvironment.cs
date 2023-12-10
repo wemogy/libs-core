@@ -49,10 +49,38 @@ namespace Wemogy.Core.Monitoring
             ServiceVersion = serviceVersion;
         }
 
+        /// <summary>
+        /// Adds an Application Insights exporter to publish metrics to.
+        /// Fails, if the Connection String is null or empty.
+        /// </summary>
+        /// <param name="connectionString">The connection string to export to.</param>
+        /// <param name="samplingRatio">The sampling ratio to use.</param>
         public MonitoringEnvironment WithApplicationInsights(string connectionString, float samplingRatio = 1f)
         {
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentException("The connection string must not be null or empty.", nameof(connectionString));
+            }
+
             ApplicationInsightsConnectionString = connectionString;
             ApplicationInsightsSamplingRatio = samplingRatio;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds an Application Insights exporter to publish metrics to.
+        /// Skips, if the Connection String is null or empty.
+        /// </summary>
+        /// <param name="connectionString">The connection string to export to.</param>
+        /// <param name="samplingRatio">The sampling ratio to use.</param>
+        public MonitoringEnvironment WithOptionalApplicationInsights(string? connectionString, float samplingRatio = 1f)
+        {
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                ApplicationInsightsConnectionString = connectionString;
+                ApplicationInsightsSamplingRatio = samplingRatio;
+            }
+
             return this;
         }
 
