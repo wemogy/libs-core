@@ -1,4 +1,5 @@
 using System;
+using Wemogy.Core.Errors.Exceptions;
 
 namespace Wemogy.Core.Json.ExceptionInformation
 {
@@ -13,6 +14,8 @@ namespace Wemogy.Core.Json.ExceptionInformation
         public string Source { get; set; }
         public string? StackTrace { get; set; }
         public ExceptionInformation? InnerException { get; set; }
+
+        public ErrorExceptionInformation? ErrorExceptionInformation { get; set; }
 
         public ExceptionInformation(
             Exception exception,
@@ -32,6 +35,21 @@ namespace Wemogy.Core.Json.ExceptionInformation
             {
                 InnerException = new ExceptionInformation(exception.InnerException, includeInnerException, includeStackTrace);
             }
+
+            if (exception is ErrorException errorException)
+            {
+                ErrorExceptionInformation = new ErrorExceptionInformation(
+                    errorException.ErrorType,
+                    errorException.Code,
+                    errorException.Description);
+            }
+        }
+
+        public ExceptionInformation()
+        {
+            ExceptionType = string.Empty;
+            Message = string.Empty;
+            Source = string.Empty;
         }
     }
 }
