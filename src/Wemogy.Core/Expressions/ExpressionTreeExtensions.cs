@@ -20,7 +20,7 @@ namespace Wemogy.Core.Expressions
 
             var visitor = new ModifyValueVisitor(propertyValueModifiers);
 
-            return (Expression<Func<T, bool>>)visitor.Visit(expression) !;
+            return (Expression<Func<T, bool>>)visitor.Visit(expression)!;
         }
     }
 }
