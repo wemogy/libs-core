@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Wemogy.Core.Primitives;
+using Wemogy.Core.Tests.Primitives.JsonConverters.Common;
 using Xunit;
 
 // ReSharper disable CollectionNeverQueried.Global
@@ -62,24 +63,5 @@ public class BitsJsonConverterTests
         // Assert
         Assert.NotNull(bitsDeserialized);
         Assert.NotNull(modelWithBitsPropsDeserialized);
-    }
-}
-
-class ModelWithBitsProps
-{
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public Bits Bits { get; set; }
-
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public Bits? BitsNull { get; set; }
-
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public List<Bits?> BitsList { get; set; }
-
-    public ModelWithBitsProps()
-    {
-        Bits = new Bits();
-        BitsNull = null;
-        BitsList = new List<Bits?>();
     }
 }

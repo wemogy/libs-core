@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Wemogy.Core.Primitives;
 using Wemogy.Core.Tests.Enums;
+using Wemogy.Core.Tests.Primitives.JsonConverters.Common;
 using Xunit;
+using ModelWithBitsProps = Wemogy.Core.Tests.Primitives.JsonConverters.Common.ModelWithBitsProps;
 
 // ReSharper disable CollectionNeverQueried.Global
 
@@ -63,24 +65,5 @@ public class EnumBitsJsonConverterTests
         // Assert
         Assert.NotNull(bitsDeserialized);
         Assert.NotNull(modelWithBitsPropsDeserialized);
-    }
-}
-
-class ModelWithEnumBitsProps
-{
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public EnumBits<TestPermissionFlags> Bits { get; set; }
-
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public EnumBits<TestPermissionFlags>? BitsNull { get; set; }
-
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public List<EnumBits<TestPermissionFlags>?> BitsList { get; set; }
-
-    public ModelWithEnumBitsProps()
-    {
-        Bits = EnumBits<TestPermissionFlags>.Empty;
-        BitsNull = null;
-        BitsList = new List<EnumBits<TestPermissionFlags>?>();
     }
 }

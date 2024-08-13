@@ -20,7 +20,7 @@ namespace Wemogy.Core.Tests.Extensions
                 .RuleFor(x => x.Deleted, f => f.Random.Bool())
                 .RuleFor(x => x.FlightCount, f => f.Random.Long()).Generate();
 
-            var userDeserialized = user.ToJson().FromJson<TestClass>() !;
+            var userDeserialized = user.ToJson().FromJson<TestClass>()!;
 
             Assert.Equal(user.Id, userDeserialized.Id);
             Assert.True(user.CreatedAt.IsSameUnixDateTime(userDeserialized.CreatedAt));
@@ -38,7 +38,7 @@ namespace Wemogy.Core.Tests.Extensions
 }";
 
             // Act
-            var instance = json.FromJson<TestClass>() !;
+            var instance = json.FromJson<TestClass>()!;
 
             // Assert
             Assert.Equal(TestEnum.Value1, instance.EnumPropertyA);
@@ -53,7 +53,7 @@ namespace Wemogy.Core.Tests.Extensions
 }";
 
             // Act
-            var instance = json.FromJson<TestClass>() !;
+            var instance = json.FromJson<TestClass>()!;
 
             // Assert
             Assert.Equal(TestEnum.None, instance.EnumPropertyA);
@@ -69,7 +69,7 @@ namespace Wemogy.Core.Tests.Extensions
 }";
 
             // Act
-            var instance = json.FromJson<TestClass>() !;
+            var instance = json.FromJson<TestClass>()!;
 
             // Assert
             instance.TestTimeSpan.Should().Be(
@@ -126,7 +126,7 @@ namespace Wemogy.Core.Tests.Extensions
             var document = instance.ToJsonDocument();
 
             // Act
-            var result = document.FromJsonDocument<TestClass>() !;
+            var result = document.FromJsonDocument<TestClass>()!;
 
             // Assert
             Assert.NotNull(result);
@@ -140,7 +140,7 @@ namespace Wemogy.Core.Tests.Extensions
             // Arrange
             var user = new Faker<TestClass>()
                 .RuleFor(x => x.Id, f => f.Random.Guid())
-                .RuleFor(x => x.CreatedAt, f => DateTime.UtcNow)
+                .RuleFor(x => x.CreatedAt, _ => DateTime.UtcNow)
                 .RuleFor(x => x.Deleted, f => f.Random.Bool())
                 .RuleFor(x => x.FlightCount, f => f.Random.Long()).Generate();
 
@@ -163,7 +163,7 @@ namespace Wemogy.Core.Tests.Extensions
 
             // Act
             var cloned = user.Clone();
-            var hashSetRemovedItems = cloned.HashSet.RemoveWhere(x => true);
+            var hashSetRemovedItems = cloned.HashSet.RemoveWhere(_ => true);
 
             // Assert
             hashSetRemovedItems.Should().Be(1);
