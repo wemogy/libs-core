@@ -59,7 +59,7 @@ namespace Wemogy.Core.Jwt
             }
 
             var token = jwtBuilder
-                .WithSerializer(new JwtJsonSerializer())
+                .WithJsonSerializer(new JwtJsonSerializer())
                 .Encode();
             return token;
         }

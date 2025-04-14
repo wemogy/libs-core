@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Wemogy.Core.Json.ConverterFactories;
 using Wemogy.Core.Json.Converters;
+using TypeConverter = Wemogy.Core.Json.Converters.TypeConverter;
 
 namespace Wemogy.Core.Json
 {
@@ -12,8 +13,8 @@ namespace Wemogy.Core.Json
         {
             new DateTimeUnixEpochJsonConverter(),
             new EnumJsonConverterFactory(),
-            new JsonTimeSpanConverter(),
-            new TypeConverter()
+            new TypeConverter(),
+            new DoubleTrimConverter()
         };
 
         public static JsonSerializerOptions Options
