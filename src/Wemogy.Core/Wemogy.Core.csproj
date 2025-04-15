@@ -12,6 +12,7 @@
     <PackageDescription>Core library</PackageDescription>
     <PackageTags>wemogy</PackageTags>
     <RepositoryUrl>https://github.com/wemogy/libs-core</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
