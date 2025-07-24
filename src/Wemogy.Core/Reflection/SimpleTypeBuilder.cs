@@ -102,7 +102,7 @@ namespace Wemogy.Core.Reflection
 
         public Type CreateType()
         {
-            return _typeBuilder.CreateType();
+            return _typeBuilder.CreateTypeInfo().AsType();
         }
 
         private CustomAttributeBuilder BuildCustomAttribute(Attribute attribute)

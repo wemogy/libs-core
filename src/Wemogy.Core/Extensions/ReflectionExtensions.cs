@@ -18,7 +18,7 @@ namespace Wemogy.Core.Extensions
             // transform from json
             pathParts = pathParts.Select(x => x.ToPascalCase()).ToList();
 
-            var propertyName = string.Join('.', pathParts);
+            var propertyName = string.Join(".", pathParts);
 
             return propertyName;
         }
