@@ -21,11 +21,15 @@ jobs:
       packages: "write"
     steps:
       - name: Get version for next release
-        if: ${{ github.event.inputs.version == '' }}
-        uses: wemogy/next-version-action@2.0.3
+        uses: wemogy/get-release-version-action@v4.3.2
         id: release-version
+        if: ${{ github.event.inputs.version == '' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          prefix: v
+          create-tag: 'true'
+          git-username: wemogy IT
+          git-email: it@wemogy.com
+          mode: semantic
 
       - uses: actions/checkout@v2
 
@@ -33,9 +37,9 @@ jobs:
       - name: Build .NET
         uses: ./.github/actions/dotnet
         with:
-          version: ${{ steps.release-version.outputs.next-version }}${{ github.event.inputs.version && 'pre' || '' }}
+          version: ${{ steps.release-version.outputs.version }}${{ github.event.inputs.version && 'pre' || '' }}
       - name: Create Nuget package(s)
-        run: dotnet pack --no-build --configuration Release /p:VersionPrefix=${{ steps.release-version.outputs.next-version }}${{ github.event.inputs.version && 'pre' || '' }}
+        run: dotnet pack --no-build --configuration Release /p:VersionPrefix=${{ steps.release-version.outputs.version }}${{ github.event.inputs.version && 'pre' || '' }}
         working-directory: src
       - name: Publish Nuget package(s)
         run: dotnet nuget push **/**/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.PUBLIC_NUGET_TOKEN }}
@@ -63,8 +67,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Version ${{ steps.release-version.outputs.next-version }}${{ github.event.inputs.version && 'pre' || '' }}
-          tag_name: ${{ steps.release-version.outputs.next-version-name }}${{ github.event.inputs.version && 'pre' || '' }}
+          name: Version ${{ steps.release-version.outputs.version }}${{ github.event.inputs.version && 'pre' || '' }}
+          tag_name: ${{ steps.release-version.outputs.version-name }}${{ github.event.inputs.version && 'pre' || '' }}
           prerelease: ${{ github.event.inputs.pre-release || false }}
           generate_release_notes: true
         env:
