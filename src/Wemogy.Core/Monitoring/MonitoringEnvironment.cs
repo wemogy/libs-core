@@ -78,7 +78,7 @@ namespace Wemogy.Core.Monitoring
         {
             if (!string.IsNullOrEmpty(connectionString))
             {
-                ApplicationInsightsConnectionString = connectionString;
+                ApplicationInsightsConnectionString = connectionString!;
                 ApplicationInsightsSamplingRatio = samplingRatio;
                 UseApplicationInsights = true;
             }

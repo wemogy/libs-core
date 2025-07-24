@@ -51,10 +51,10 @@ namespace Wemogy.Core.Jwt.Models
                 json.Add("scp", Scopes.Join(" "));
             }
 
-            foreach (var (key, value) in AdditionalClaims)
+            foreach (var claim in AdditionalClaims)
             {
-                var obj = value.ToJson().FromJson<JsonObject>();
-                json.Add(key, obj);
+                var obj = claim.Value.ToJson().FromJson<JsonObject>();
+                json.Add(claim.Key, obj);
             }
 
             return json;

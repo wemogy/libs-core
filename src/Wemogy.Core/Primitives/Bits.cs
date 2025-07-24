@@ -35,7 +35,7 @@ namespace Wemogy.Core.Primitives
                 return;
             }
 
-            _state = Base64.DecodeUrl(base64UrlValue);
+            _state = Base64.DecodeUrl(base64UrlValue!);
         }
 
         public static Bits Empty
