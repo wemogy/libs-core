@@ -3,6 +3,10 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      version:
+        description: Version to release, e.g. 1.0.0
+        type: string
+        required: false
       pre-release:
         description: Genereates a Pre-Release when checked
         type: boolean
