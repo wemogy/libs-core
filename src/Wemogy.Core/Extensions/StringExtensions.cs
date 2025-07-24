@@ -134,11 +134,13 @@ namespace Wemogy.Core.Extensions
             {
                 return false;
             }
+
             // Optional: Prüfe Länge (Base64-Längen sind immer vielfache von 4)
             if (base64.Length % 4 != 0)
             {
                 return false;
             }
+
             try
             {
                 _ = Convert.FromBase64String(base64);
