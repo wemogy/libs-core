@@ -24,18 +24,21 @@ jobs:
       contents: "write"
       packages: "write"
     steps:
+      - name: Clone repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
       - name: Get version for next release
         uses: wemogy/get-release-version-action@v4.3.2
         id: release-version
         if: ${{ github.event.inputs.version == '' }}
         with:
           prefix: v
-          create-tag: 'true'
+          create-tag: "true"
           git-username: wemogy IT
           git-email: it@wemogy.com
           mode: semantic
-
-      - uses: actions/checkout@v2
 
       # Nuget
       - name: Build .NET
