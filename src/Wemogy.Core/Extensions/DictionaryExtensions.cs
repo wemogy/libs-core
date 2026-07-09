@@ -7,14 +7,7 @@ namespace Wemogy.Core.Extensions
     {
         public static void Put<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
         {
-            if (dictionary.ContainsKey(key))
-            {
-                dictionary[key] = value;
-            }
-            else
-            {
-                dictionary.Add(key, value);
-            }
+            dictionary[key] = value;
         }
 
         /**
@@ -32,9 +25,9 @@ namespace Wemogy.Core.Extensions
 
         public static TValue? Get<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
-            if (dictionary.ContainsKey(key))
+            if (dictionary.TryGetValue(key, out var value))
             {
-                return dictionary[key];
+                return value;
             }
 
             return default(TValue);
@@ -42,19 +35,19 @@ namespace Wemogy.Core.Extensions
 
         public static Guid GetGuid<TKey>(this IDictionary<TKey, string> dictionary, TKey key)
         {
-            if (dictionary.ContainsKey(key))
+            if (dictionary.TryGetValue(key, out var value))
             {
-                return Guid.Parse(dictionary[key]);
+                return Guid.Parse(value);
             }
 
-            return default(Guid);
+            return Guid.Empty;
         }
 
         public static Guid? GetNullableGuid<TKey>(this IDictionary<TKey, string> dictionary, TKey key)
         {
-            if (dictionary.ContainsKey(key))
+            if (dictionary.TryGetValue(key, out var value))
             {
-                return Guid.Parse(dictionary[key]);
+                return Guid.Parse(value);
             }
 
             return null;
@@ -63,12 +56,13 @@ namespace Wemogy.Core.Extensions
         public static void AddItem<TKey, TValue>(this Dictionary<TKey, List<TValue>> dictionary, TKey key, TValue item)
             where TKey : notnull
         {
-            if (!dictionary.ContainsKey(key))
+            if (!dictionary.TryGetValue(key, out var list))
             {
-                dictionary.Add(key, new List<TValue>());
+                list = new List<TValue>();
+                dictionary[key] = list;
             }
 
-            dictionary[key].Add(item);
+            list.Add(item);
         }
     }
 }
