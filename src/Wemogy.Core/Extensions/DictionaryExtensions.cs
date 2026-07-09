@@ -61,6 +61,7 @@ namespace Wemogy.Core.Extensions
         }
 
         public static void AddItem<TKey, TValue>(this Dictionary<TKey, List<TValue>> dictionary, TKey key, TValue item)
+            where TKey : notnull
         {
             if (!dictionary.ContainsKey(key))
             {

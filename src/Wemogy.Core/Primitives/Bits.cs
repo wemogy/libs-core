@@ -265,9 +265,9 @@ namespace Wemogy.Core.Primitives
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return ToString().Equals(obj.ToString());
+            return ToString().Equals(obj?.ToString());
         }
 
         public override int GetHashCode()
