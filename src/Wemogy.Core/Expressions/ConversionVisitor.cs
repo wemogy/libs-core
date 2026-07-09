@@ -71,7 +71,7 @@ namespace Wemogy.Core.Expressions
 
                 var listDelegate = Expression.Lambda(node.Object).Compile();
                 var list = listDelegate.DynamicInvoke();
-                var stringList = list
+                var stringList = list!
                     .Adapt<List<string>>()
                     .Select(x => $"{_prefix}{x}")
                     .ToList();

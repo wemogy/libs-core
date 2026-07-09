@@ -21,8 +21,8 @@ namespace Wemogy.Core.Monitoring
 
         public MonitoringEnvironment()
         {
-            ServiceName = Assembly.GetEntryAssembly().GetName().Name!;
-            ServiceVersion = Assembly.GetEntryAssembly().GetName().Version != null
+            ServiceName = Assembly.GetEntryAssembly()!.GetName().Name!;
+            ServiceVersion = Assembly.GetEntryAssembly()!.GetName().Version != null
                 ? Assembly.GetExecutingAssembly().GetName().Version!.ToString()
                 : "0.0.0";
 

@@ -111,7 +111,7 @@ namespace Wemogy.Core.Reflection
 
             var constructor = type.GetConstructor(Type.EmptyTypes);
             return new CustomAttributeBuilder(
-                constructor,
+                constructor!,
                 Array.Empty<object>());
         }
     }

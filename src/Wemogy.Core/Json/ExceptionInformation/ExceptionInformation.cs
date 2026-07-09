@@ -29,7 +29,7 @@ namespace Wemogy.Core.Json.ExceptionInformation
 
             ExceptionType = exception.GetType().FullName ?? exception.GetType().Name;
             Message = exception.Message;
-            Source = exception.Source;
+            Source = exception.Source ?? string.Empty;
             StackTrace = includeStackTrace ? exception.StackTrace : null;
             if (includeInnerException && exception.InnerException is not null)
             {
