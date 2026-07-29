@@ -14,7 +14,7 @@ namespace Wemogy.Core.Primitives.JsonConverters
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var converterType = typeof(EnumBitsJsonConverterInner<>).MakeGenericType(typeToConvert.GetGenericArguments()[0]);
-            return (JsonConverter)Activator.CreateInstance(converterType);
+            return (JsonConverter)Activator.CreateInstance(converterType)!;
         }
 
         private class EnumBitsJsonConverterInner<T> : JsonConverter<EnumBits<T>>
