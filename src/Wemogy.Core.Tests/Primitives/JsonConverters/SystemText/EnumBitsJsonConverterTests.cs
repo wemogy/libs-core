@@ -1,30 +1,32 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Wemogy.Core.Primitives;
+using Wemogy.Core.Tests.Enums;
 using Wemogy.Core.Tests.Primitives.JsonConverters.Common;
 using Xunit;
+using ModelWithBitsProps = Wemogy.Core.Tests.Primitives.JsonConverters.Common.ModelWithBitsProps;
 
 // ReSharper disable CollectionNeverQueried.Global
 
 namespace Wemogy.Core.Tests.Primitives.JsonConverters.SystemText;
 
-public class BitsJsonConverterTests
+public class EnumBitsJsonConverterTests
 {
     [Fact]
-    public void BitsJsonConverter_Write_ShouldWork()
+    public void EnumBitsJsonConverter_Write_ShouldWork()
     {
         // Arrange
         var bitsBase64UrlValue = "Azb_-92";
         var bits = new Bits(bitsBase64UrlValue);
-        var modelWithBitsProps = new ModelWithBitsProps()
+        var modelWithBitsProps = new ModelWithEnumBitsProps()
         {
-            Bits = new Bits(),
+            Bits = EnumBits<TestPermissionFlags>.Empty,
             BitsNull = null,
-            BitsList = new List<Bits?>()
+            BitsList = new List<EnumBits<TestPermissionFlags>?>()
             {
-                new Bits(),
+                EnumBits<TestPermissionFlags>.Empty,
                 null,
-                new Bits()
+                EnumBits<TestPermissionFlags>.Empty
             }
         };
 
@@ -38,19 +40,19 @@ public class BitsJsonConverterTests
     }
 
     [Fact]
-    public void BitsJsonConverter_Read_ShouldWork()
+    public void EnumBitsJsonConverter_Read_ShouldWork()
     {
         // Arrange
         var bits = new Bits();
-        var modelWithBitsProps = new ModelWithBitsProps()
+        var modelWithBitsProps = new ModelWithEnumBitsProps()
         {
-            Bits = new Bits(),
+            Bits = EnumBits<TestPermissionFlags>.Empty,
             BitsNull = null,
-            BitsList = new List<Bits?>()
+            BitsList = new List<EnumBits<TestPermissionFlags>?>()
             {
-                new Bits(),
+                EnumBits<TestPermissionFlags>.Empty,
                 null,
-                new Bits()
+                EnumBits<TestPermissionFlags>.Empty
             }
         };
         var bitsJson = JsonSerializer.Serialize(bits);
