@@ -55,7 +55,7 @@ namespace Wemogy.Core.Json
         public T Build<T>()
         {
             var jsonString = Build();
-            return jsonString.FromJson<T>() !;
+            return jsonString.FromJson<T>()!;
         }
     }
 }

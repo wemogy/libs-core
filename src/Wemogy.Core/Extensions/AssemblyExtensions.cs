@@ -13,7 +13,8 @@ namespace Wemogy.Core.Extensions
                 new List<Assembly>()
             {
                 assembly
-            }, interfaceType);
+            },
+                interfaceType);
         }
 
         public static List<Type> GetClassTypesWhichImplementInterface<TInterface>(this Assembly assembly)
@@ -25,7 +26,8 @@ namespace Wemogy.Core.Extensions
         public static List<Type> GetClassTypesWhichImplementInterface(this List<Assembly> assemblies, Type interfaceType)
         {
             return assemblies
-                .SelectMany(assembly => assembly.GetTypes()
+                .SelectMany(
+                    assembly => assembly.GetTypes()
                     .Where(t => t.IsClass && t.InheritsOrImplements(interfaceType)))
                 .ToList();
         }
