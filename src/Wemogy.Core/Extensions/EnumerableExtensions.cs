@@ -40,7 +40,7 @@ namespace Wemogy.Core.Extensions
 
         public static object ToListOfType(this IEnumerable<object> value, Type type)
         {
-            var list = (IList)Activator.CreateInstance(type);
+            var list = (IList)Activator.CreateInstance(type)!;
             foreach (var item in value)
             {
                 list.Add(item);

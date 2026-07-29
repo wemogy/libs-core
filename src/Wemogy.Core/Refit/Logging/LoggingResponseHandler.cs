@@ -22,17 +22,17 @@ namespace Wemogy.Core.Refit.Logging
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            var id = request.Properties[LoggingConstants.RequestIdPropertyKey];
+            request.Options.TryGetValue(LoggingConstants.RequestIdPropertyKey, out var id);
             var msg = $"[{id} - Response]";
-            var requestStopwatch = (Stopwatch)request.Properties[LoggingConstants.StopwatchPropertyKey];
-            _logger.LogDebug("{Msg} Duration: {RequestStopwatchElapsedMilliseconds}", msg, requestStopwatch.ElapsedMilliseconds);
+            request.Options.TryGetValue(LoggingConstants.StopwatchPropertyKey, out var requestStopwatch);
+            _logger.LogDebug("{Msg} Duration: {RequestStopwatchElapsedMilliseconds}", msg, requestStopwatch?.ElapsedMilliseconds);
             _logger.LogDebug("{Msg}==========End==========", msg);
 
             _logger.LogDebug("{Msg}=========Start=========", msg);
 
             var resp = response;
 
-            _logger.LogDebug("{Msg} {Upper}/{RespVersion} {RespStatusCode} {RespReasonPhrase}", msg, request.RequestUri.Scheme.ToUpper(), resp.Version, (int)resp.StatusCode, resp.ReasonPhrase);
+            _logger.LogDebug("{Msg} {Upper}/{RespVersion} {RespStatusCode} {RespReasonPhrase}", msg, request.RequestUri!.Scheme.ToUpper(), resp.Version, (int)resp.StatusCode, resp.ReasonPhrase);
 
             foreach (var header in resp.Headers)
             {
@@ -46,8 +46,7 @@ namespace Wemogy.Core.Refit.Logging
                     _logger.LogDebug("{Msg} {HeaderKey}: {Join}", msg, header.Key, string.Join(", ", header.Value));
                 }
 
-                var isTextBasedContentType =
-                    (bool)request.Properties[LoggingConstants.IsTextBasedContentTypePropertyKey];
+                request.Options.TryGetValue(LoggingConstants.IsTextBasedContentTypePropertyKey, out var isTextBasedContentType);
                 if (isTextBasedContentType)
                 {
                     var stopwatch = Stopwatch.StartNew();

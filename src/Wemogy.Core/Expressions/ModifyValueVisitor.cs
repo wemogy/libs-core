@@ -81,7 +81,7 @@ namespace Wemogy.Core.Expressions
             var modifier = _propertyValueModifiers[propertyInfo];
             var function = Expression.Lambda(expression).Compile();
             var value = function.DynamicInvoke();
-            var modifiedValue = modifier(value.ToString());
+            var modifiedValue = modifier(value?.ToString() ?? string.Empty);
             return Expression.Constant(modifiedValue);
         }
 
