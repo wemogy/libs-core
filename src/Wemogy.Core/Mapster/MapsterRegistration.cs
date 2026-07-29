@@ -34,7 +34,7 @@ namespace Wemogy.Core.Mapster
             var mappingConfigs = assemblies
                 .ToList()
                 .GetClassTypesWhichImplementInterface<IMappingConfig>()
-                .Select(x => Activator.CreateInstance(x) as IMappingConfig) !
+                .Select(x => Activator.CreateInstance(x) as IMappingConfig)!
                 .ToList<IMappingConfig>();
 
             foreach (var mappingConfig in mappingConfigs)

@@ -12,7 +12,8 @@ namespace Wemogy.Core.Expressions
             string propertyName,
             Func<string, string> modifier)
         {
-            var propertyInfo = typeof(T).GetProperty(propertyName);
+            var propertyInfo = typeof(T).GetProperty(propertyName)
+                ?? throw new ArgumentException($"Property '{propertyName}' was not found on type '{typeof(T).FullName}'.", nameof(propertyName));
             var propertyValueModifiers = new Dictionary<PropertyInfo, Func<string, string>>
             {
                 { propertyInfo, modifier }
@@ -20,7 +21,7 @@ namespace Wemogy.Core.Expressions
 
             var visitor = new ModifyValueVisitor(propertyValueModifiers);
 
-            return (Expression<Func<T, bool>>)visitor.Visit(expression) !;
+            return (Expression<Func<T, bool>>)visitor.Visit(expression)!;
         }
     }
 }
