@@ -62,23 +62,23 @@ public class BitsJsonConverterTests
         Assert.NotNull(bitsDeserialized);
         Assert.NotNull(modelWithBitsPropsJson);
     }
-}
 
-class ModelWithBitsProps
-{
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public Bits Bits { get; set; }
-
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public Bits? BitsNull { get; set; }
-
-    // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public List<Bits?> BitsList { get; set; }
-
-    public ModelWithBitsProps()
+    class ModelWithBitsProps
     {
-        Bits = new Bits();
-        BitsNull = null;
-        BitsList = new List<Bits?>();
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public Bits Bits { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public Bits? BitsNull { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public List<Bits?> BitsList { get; set; }
+
+        public ModelWithBitsProps()
+        {
+            Bits = new Bits();
+            BitsNull = null;
+            BitsList = new List<Bits?>();
+        }
     }
 }

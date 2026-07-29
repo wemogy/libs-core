@@ -92,7 +92,7 @@ namespace Wemogy.Core.Primitives
             return _bits.ToString();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is EnumBits<TEnum> enumBits)
             {

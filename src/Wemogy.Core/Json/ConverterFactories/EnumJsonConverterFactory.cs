@@ -16,7 +16,7 @@ namespace Wemogy.Core.Json.ConverterFactories
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             return (JsonConverter)Activator.CreateInstance(
-                GetEnumConverterType(typeToConvert)) !;
+                GetEnumConverterType(typeToConvert))!;
         }
 
         // thanks to: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/Converters/Value/EnumConverterFactory.cs

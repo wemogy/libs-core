@@ -18,7 +18,7 @@ namespace Wemogy.Core.Jwt
             return JsonSerializer.Deserialize(
                 json,
                 type,
-                JwtDefaults.JsonSerializerOptions) !;
+                JwtDefaults.JsonSerializerOptions)!;
         }
     }
 }

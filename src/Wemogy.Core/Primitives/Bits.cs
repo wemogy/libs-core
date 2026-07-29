@@ -35,7 +35,7 @@ namespace Wemogy.Core.Primitives
                 return;
             }
 
-            _state = Base64.DecodeUrl(base64UrlValue);
+            _state = Base64.DecodeUrl(base64UrlValue!);
         }
 
         public static Bits Empty
@@ -265,9 +265,9 @@ namespace Wemogy.Core.Primitives
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return ToString().Equals(obj.ToString());
+            return ToString().Equals(obj?.ToString());
         }
 
         public override int GetHashCode()

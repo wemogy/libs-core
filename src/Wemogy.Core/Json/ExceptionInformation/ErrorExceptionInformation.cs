@@ -1,20 +1,17 @@
-using System;
 using Wemogy.Core.Errors.Enums;
 
-namespace Wemogy.Core.Errors.Exceptions
+namespace Wemogy.Core.Json.ExceptionInformation
 {
-    public abstract class ErrorException : Exception
+    public class ErrorExceptionInformation
     {
         public ErrorType ErrorType { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
 
-        protected ErrorException(
+        public ErrorExceptionInformation(
             ErrorType errorType,
             string code,
-            string description,
-            Exception? innerException)
-            : base($"{code} - {description}", innerException)
+            string description)
         {
             ErrorType = errorType;
             Code = code;

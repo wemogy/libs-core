@@ -18,13 +18,13 @@ namespace Wemogy.Core.Extensions
             // transform from json
             pathParts = pathParts.Select(x => x.ToPascalCase()).ToList();
 
-            var propertyName = string.Join('.', pathParts);
+            var propertyName = string.Join(".", pathParts);
 
             return propertyName;
         }
 
         // Source: https://stackoverflow.com/questions/1196991/get-property-value-from-string-using-reflection
-        public static object? GetPropertyValue(this object obj, string name)
+        public static object? GetPropertyValue(this object? obj, string name)
         {
             foreach (string part in name.Split('.').Select(x => x.ToPascalCase()))
             {
@@ -207,7 +207,7 @@ namespace Wemogy.Core.Extensions
             var result = genericMethod.Invoke(
                 target,
                 parameters);
-            return (TResult)result;
+            return (TResult)result!;
         }
 
         public static MethodInfo GetGenericMethod(
