@@ -130,8 +130,26 @@ namespace Wemogy.Core.Extensions
 
         public static bool IsBase64String(this string base64)
         {
-            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
-            return Convert.TryFromBase64String(base64, buffer, out _);
+            if (string.IsNullOrWhiteSpace(base64))
+            {
+                return false;
+            }
+
+            // Optional: Prüfe Länge (Base64-Längen sind immer vielfache von 4)
+            if (base64.Length % 4 != 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                _ = Convert.FromBase64String(base64);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static string EncodeBase64String(this string plainText)
@@ -150,7 +168,7 @@ namespace Wemogy.Core.Extensions
 
         public static string[] SplitOnLastOccurrence(this string s, string splitCharacter)
         {
-            var parts = s.Split(splitCharacter);
+            var parts = s.Split(new[] { splitCharacter }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length < 3)
             {
@@ -180,7 +198,7 @@ namespace Wemogy.Core.Extensions
 
         public static string[] SplitOnFirstOccurrence(this string s, string splitCharacter)
         {
-            var parts = s.Split(splitCharacter);
+            var parts = s.Split(new[] { splitCharacter }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length < 3)
             {
