@@ -29,7 +29,7 @@ namespace Wemogy.Core.Jwt
 
             return JsonSerializer.Deserialize<TPayload>(
                 json,
-                JwtDefaults.JsonSerializerOptions) !;
+                JwtDefaults.JsonSerializerOptions)!;
         }
 
         public static string DecodeAndVerifyJwtToken(string jwtToken, RSA publicKey)

@@ -26,7 +26,7 @@ namespace Wemogy.Core.Refit.Logging
             var id = Guid.NewGuid().ToString();
             var msg = $"[{id} -   Request]";
 
-            var host = $"{req.RequestUri.Scheme}://{req.RequestUri.Host}:{req.RequestUri.Port}";
+            var host = $"{req.RequestUri!.Scheme}://{req.RequestUri.Host}:{req.RequestUri.Port}";
             _logger.LogDebug("{Msg}========Start==========", msg);
             _logger.LogDebug("{Msg} {ReqMethod} {RequestUriPathAndQuery} {RequestUriScheme}/{ReqVersion}", msg, req.Method, req.RequestUri.PathAndQuery, req.RequestUri.Scheme, req.Version);
             _logger.LogDebug("{Msg} Host: {Host}", msg, host);
@@ -55,9 +55,9 @@ namespace Wemogy.Core.Refit.Logging
                 }
             }
 
-            req.Properties.Add(LoggingConstants.RequestIdPropertyKey, id);
-            req.Properties.Add(LoggingConstants.StopwatchPropertyKey, Stopwatch.StartNew());
-            req.Properties.Add(LoggingConstants.IsTextBasedContentTypePropertyKey, isTextBasedContentType);
+            req.Options.Set(LoggingConstants.RequestIdPropertyKey, id);
+            req.Options.Set(LoggingConstants.StopwatchPropertyKey, Stopwatch.StartNew());
+            req.Options.Set(LoggingConstants.IsTextBasedContentTypePropertyKey, isTextBasedContentType);
         }
 
         readonly string[] _types = new[] { "html", "text", "xml", "json", "txt", "x-www-form-urlencoded" };
